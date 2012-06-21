@@ -125,7 +125,7 @@ class sLoader extends fLoader {
    * @return void
    */
   private static function setPath() {
-    if (!self::$path) {
+    if (self::$path === NULL) {
       self::$path = realpath(dirname(__FILE__)).'/';
     }
   }
