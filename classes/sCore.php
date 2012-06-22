@@ -100,8 +100,26 @@ abstract class sCore extends fCore {
     self::call($class.'::getDatabase');
     self::call($class.'::configureSession');
     self::call($class.'::configureAuthorization');
+    self::setSessionName();
   }
-
+  
+  /**
+   * For protection if 'session.name' is PHPSESSID in the php.ini lets
+   *  spoof it to gibberish, just so we give the client's no idea 
+   *  that we are running php.
+   * 
+   * @return void
+   * @see http://php.net/session.name
+   */
+  private static function setSessionName() {
+    $sessid = ini_get('session.name');
+    $randomString = fCryptography::randomString(10);
+    
+    if ($sessid === 'PHPSESSID') {
+      ini_set('session.name',$randomString);    
+    }
+  }
+  
   // @codeCoverageIgnoreStart
   /**
    * Forces use as a static class.
