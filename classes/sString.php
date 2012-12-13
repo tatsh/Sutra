@@ -40,7 +40,21 @@ class sString implements ArrayAccess, Countable, IteratorAggregate {
    * @var string
    */
   const ENCODING_RAWURL = 'rawurlencode';
-
+  
+  /**
+   * The callback to encode into md5 hash.
+   * 
+   * @var string
+   */
+  const ENCODING_MD5 = 'md5';
+  
+  /**
+   * The callback to encode into sha1 hash.
+   * 
+   * @var string
+   */
+  const ENCODING_SHA1 = 'sha1';
+  
   /**
    * The string.
    *
@@ -303,12 +317,20 @@ class sString implements ArrayAccess, Countable, IteratorAggregate {
   /**
    * Converts our string to a boolean.
    *
+   * @param boolean $strict If the match must be strict.
    * @return boolean The boolean from the converted string.
    */
-  public function toBoolean() {
+  public function toBoolean($strict) {
     $bool = $this->toLowerCase();
-    if ($bool == 'true' || $bool == '1'){
-      return TRUE;
+    if ($strict) {
+      if ($bool === 'true' || $bool === '1') {
+        return TRUE;
+      }
+    }
+    else {
+      if ($bool == 'true' || $bool == '1'){
+        return TRUE;
+      }
     }
     return FALSE;
   }
@@ -362,7 +384,34 @@ class sString implements ArrayAccess, Countable, IteratorAggregate {
   public function toUpperCase() {
     return new self(fUTF8::upper($this->string));
   }
-
+  
+  /**
+   * Convert the string to hex.
+   * 
+   * @return sString The hex string.
+   */
+  public function toHex() {
+    return new self(bin2hex($this->string));
+  }
+  
+  /**
+   * Convert the string to md5 hash.
+   * 
+   * @return sString The md5 hash of the string.
+   */
+  public function toMd5() {
+    return new self($ths->encode(self::ENCODING_MD5));
+  }
+  
+  /**
+   * Convert the string to sha1 hash.
+   * 
+   * @return sString The sha1 hash of the string.
+   */
+  public function toSha1() {
+    return new self($this->encode(self::ENCODING_SHA1));
+  }
+  
   /**
    * Convert the beginning of each word to uppercase.
    *
