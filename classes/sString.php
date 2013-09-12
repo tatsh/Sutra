@@ -342,7 +342,17 @@ class sString implements ArrayAccess, Countable, IteratorAggregate {
   public function toRawURIComponent() {
     return $this->encode(self::ENCODING_RAWURL);
   }
-
+  
+  /**
+   * Convert the string to hexidecimal.
+   * 
+   * @see bin2hex()
+   * @return sString The string to hexidecimal.
+   */
+  public function toHex() {
+    return new self(bin2hex($this->string));
+  }
+  
   /**
    * Convert the string to all lowercase.
    *
@@ -564,6 +574,7 @@ class sString implements ArrayAccess, Countable, IteratorAggregate {
   public function getIterator() {
     return new ArrayIterator($this->toArray());
   }
+  
   /**
    * Returns the length of the string
    *
@@ -573,6 +584,16 @@ class sString implements ArrayAccess, Countable, IteratorAggregate {
     return $this->length;
   }
 
+  /**
+   * Modifys the current string to the new string defined.
+   *
+   * @param string $string The new string.
+   * @return sString The object with the new defined string.
+   */
+  public function modify($string) {
+    return new self($string);
+  }
+  
   /**
    * Executes the encoder functions/methods.
    *
