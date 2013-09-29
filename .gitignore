@@ -1,1 +1,6 @@
 .*~
+bin/
+vendor/
+composer.lock
+.kdev4/
+output/
